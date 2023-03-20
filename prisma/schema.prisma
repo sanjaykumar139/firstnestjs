@@ -1,0 +1,66 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// model Post {
+//   id     String @id @default(auto()) @map("_id") @db.ObjectId
+//   title  String
+//   userId String @db.ObjectId
+// }
+
+// model User {
+//   id    String @id @default(auto()) @map("_id") @db.ObjectId
+//   email String
+// }
+
+// model User {
+//   id    String @id @default(auto()) @map("_id") @db.ObjectId
+//   name  String?
+//   email String  @unique
+//   posts String//Post[]
+// }
+
+// // Define the `Post` table in the database
+// model Post {
+//   id        String @id @default(auto()) @map("_id") @db.ObjectId
+//   published Boolean? @default(false)
+//   title     String
+//   content   String?
+//   author    String? //User?    @relation(fields: [authorId], references: [id])
+//   authorId  Int?
+// }
+
+model Post {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  title  String
+  userId String @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model User {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  email String
+  posts Post[]
+}
+
+model Task1 {
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  status      TaskStatus1 @default(OPEN)
+  createdAt   DateTime    @default(now())
+}
+
+enum TaskStatus1 {
+  OPEN
+  CLOSED
+  INPROGRESS
+}
